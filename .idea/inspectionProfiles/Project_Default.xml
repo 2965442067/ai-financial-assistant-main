@@ -1,0 +1,26 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="numpy" />
+          <option value="omegaconf" />
+          <option value="torch" />
+          <option value="tqdm" />
+          <option value="einops" />
+          <option value="vector_quantize_pytorch" />
+          <option value="transformers" />
+          <option value="vocos" />
+          <option value="IPython" />
+          <option value="gradio" />
+          <option value="python-dotenv" />
+          <option value="pynini" />
+          <option value="WeTextProcessing" />
+          <option value="nemo_text_processing" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

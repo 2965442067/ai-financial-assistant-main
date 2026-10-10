@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suzume AI</title>
+    <meta name="viewport"
+          content="width=device-width,height=device-height, user-scalable=no,initial-scale=1, minimum-scale=1, maximum-scale=1,target-densitydpi=device-dpi ">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+    .prose pre {
+
+        background: #111827;
+
+        color: #e5e7eb;
+
+        padding: 1rem;
+
+        border-radius: 0.5rem;
+
+        overflow-x: auto;
+    }
+
+    .prose code {
+
+        color: #ef4444;
+    }
+
+    .prose h1,
+    .prose h2,
+    .prose h3 {
+
+        margin-top: 1rem;
+    }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="flex flex-col items-center h-screen w-screen">
+        <div class="flex flex-col items-center justify-center">
+            <h1 class="text-5xl font-bold mt-20">Suzume AI</h1>
+            <p class="text-xl my-10">一个基于本地知识库的AI</p>
+        </div>
+        <div class="flex flex-row items-center justify-center w-full">
+            <input id="search" type="text" placeholder="请输出查询内容"
+                   class="input input-bordered w-2/3 lg:w-2/5 mr-2"/>
+            <button class="btn btn-primary flex items-center justify-center">
+                <span id="submit-text">提交</span>
+                <svg id="loading" class="animate-spin h-5 w-5 ml-2 text-white" style="display: none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col justify-start mt-10 mx-5">
+            <div class="card bg-base-100 shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">AI 回答</h2>
+                    <p class="text-lg" id="answer"></p>
+                    <div class="card-actions justify-start" id="tags">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+const submitButton = document.querySelector('button');
+
+const search = document.querySelector('#search');
+
+const card = document.querySelector('.card');
+
+const loading = document.querySelector('#loading');
+
+const submitText = document.querySelector('#submit-text');
+
+const answer = document.querySelector('#answer');
+
+card.style.display = 'none';
+
+let markdownBuffer = "";
+
+submitButton.addEventListener('click', async () => {
+
+    loading.style.display = 'block';
+
+    submitText.style.display = 'none';
+
+    card.style.display = 'block';
+
+    answer.innerHTML = "";
+
+    markdownBuffer = "";
+
+    const data = {
+        search: search.value,
+    };
+
+    try {
+
+        const response = await fetch('/search', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify(data)
+
+        });
+
+        const reader = response.body.getReader();
+
+        const decoder = new TextDecoder("utf-8");
+
+        while (true) {
+
+            const { done, value } = await reader.read();
+
+            if (done) {
+
+                break;
+            }
+
+            const chunk = decoder.decode(value);
+
+            markdownBuffer += chunk;
+
+            answer.innerHTML = marked.parse(
+                markdownBuffer
+            );
+
+            // 自动滚动
+            window.scrollTo({
+
+                top: document.body.scrollHeight,
+
+                behavior: "smooth"
+            });
+        }
+
+    } catch (error) {
+
+        console.error('Error:', error);
+
+        answer.innerHTML = "请求失败";
+
+    } finally {
+
+        loading.style.display = 'none';
+
+        submitText.style.display = 'block';
+    }
+});
+
+</script>
+</body>
+</html>
