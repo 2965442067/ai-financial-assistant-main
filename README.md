@@ -17,6 +17,9 @@
 - **词向量模型**：Word2Vec（支持自定义语料训练）/ OpenAI Embedding
 - **向量数据库**：ChromaDB (默认，可通过配置更改)
 - **核心框架**：Python, PyTorch, Transformers, LangChain (可选)
+<img width="1412" height="1280" alt="微信图片_20261117200206" src="https://github.com/user-attachments/assets/83164dcd-149d-4948-818c-9069f9f65122" />
+<img width="1412" height="1280" alt="微信图片_20261117200202" src="https://github.com/user-attachments/assets/2ee1fc9f-23db-4c7b-be5a-9407066300cc" />
+<img width="1412" height="1280" alt="微信图片_20261117200156" src="https://github.com/user-attachments/assets/0efca15d-5d2a-4d10-ba0e-5467c1afea5a" />
 
 ## 📂 项目结构
 
