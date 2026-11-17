@@ -1,53 +1,29 @@
-# 从零搭建大模型RAG知识库
-本项目从零开始实现了大模型外接知识库的流程：
-1. 中文数据集处理
-2. 词向量模型训练
-3. 文档向量化
-4. 向量数据库存储知识库
-5. 本地ChatGLM2-6B大模型部署
-6. 简单的知识库应用
+# 💼 AI 金融助手 (AI Financial Assistant)
 
-![](./doc/media/3.png)
+基于大语言模型（LLM）与本地知识库的智能金融问答系统。
 
-## 项目结构
-- corpus：存放知识库文档的文件夹
-- data：词向量模型训练相关的数据（模型文件较大，请自行下载模型）
-- doc：词向量模型训练的源码、文档
-- llm_server：简单的知识库应用
-- config.json：项目的一些配置
-  - OPENAI_API_KEY：openai的api key
-  - EMBEDDING_MODEL_TYPE：文本向量化的模型openai或word2vec
-  - CHAT_MODEL_TYPE：对话大模型openai或chatglm
-  - CHATGLM_PORT：ChatGLM本地部署的端口
-  - **PATH：一些路径，以项目根目录为起点
-  - COLLECTION_NAME：向量数据库Collection的名称
+本项目从零开始实现了一套完整的 **RAG（检索增强生成）** 架构，支持本地私有化部署，旨在解决通用大模型在金融垂直领域存在的“知识幻觉”和“数据隐私”问题。通过外接私有金融知识库，让 AI 助手能够基于真实的金融文档、财报、研报等进行精准回答。
 
-## 运行
-### 生成持久化知识库
-```bash
-cd bert_db
-pip install -r requirements.txt
-python app.py
-```
-main.py会自动创建名为COLLECTION_NAME的向量数据库，并将corpus文件夹中的文档向量化存储到数据库中
+## ✨ 核心亮点
 
-### 运行应用
-```bash
-cd llm_server
-pip install -r requirements.txt
-python app.py
-```
+- **🔒 私有化与数据安全**：支持本地部署 `ChatGLM2-6B` 模型，金融敏感数据无需上传云端，保障数据隐私。
+- **🧠 全流程 RAG 架构**：覆盖从中文数据处理、词向量模型训练、文档向量化到向量数据库检索的完整链路。
+- **🔧 混合模型支持**：内置灵活切换机制，支持 OpenAI API 与本地 ChatGLM 模型无缝切换；支持 OpenAI Embedding 或自训练 Word2Vec 进行文本向量化。
+- **📈 垂直领域优化**：针对金融语料进行清洗与处理，提升专业词汇的向量化匹配准确度。
 
-### 运行本地部署的ChatGLM2-6B
-参考ChatGLM2-6B[官方文档](https://github.com/THUDM/ChatGLM2-6B)
+## 🛠️ 技术架构与栈
 
-# 教程
+- **大语言模型**：ChatGLM2-6B（本地部署）/ OpenAI (GPT-3.5/4)
+- **词向量模型**：Word2Vec（支持自定义语料训练）/ OpenAI Embedding
+- **向量数据库**：ChromaDB (默认，可通过配置更改)
+- **核心框架**：Python, PyTorch, Transformers, LangChain (可选)
 
-- [训练word2vec](./doc/word2vec.ipynb)
+## 📂 项目结构
 
-- [手把手从零教你搭建大模型知识库](./doc/手把手教你从零搭建自己的知识库.md)
-
-- [document.ai](https://github.com/GanymedeNil/document.ai)
-"# ai-financial-assistant-main" 
-"# ai-financial-assistant-main" 
-"# ai-financial-assistant-main" 
+```text
+├── corpus/               # 存放金融领域的知识库文档 (txt/pdf等)
+├── data/                 # 词向量模型训练相关的数据集与模型文件
+├── doc/                  # 词向量训练源码、搭建教程与说明文档
+├── llm_server/           # Web 应用服务端代码 (知识库应用)
+├── bert_db/              # 知识库向量化与存储脚本
+└── config.json           # 全局配置文件
